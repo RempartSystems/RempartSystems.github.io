@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rempart Systems</title>
+    <style>
+        :root {
+            --light-blue: #3B5A8C;
+            --dark-blue: #1B2A49;
+            --dark-red: rgb(140, 27, 43);
+            --white: #ffffff;
+            --gray-light: #f4f6f8;
+            --red-visor: rgb(140, 27, 43);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Segoe UI", "Roboto Condensed", Arial, sans-serif;
+            background: var(--white);
+            color: var(--dark-blue);
+            line-height: 1.6;
+        }
+
+        section {
+            position: relative;
+            padding: 80px 20px;
+        }
+
+        section:not(:nth-of-type(2))::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 60px;
+            height: 2px;
+            background: black;
+            transform: translateX(-50%);
+        }
+
+        section::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://www.transparenttextures.com/patterns/hexellence.png');
+            /* subtle hex */
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.99);
+                /* opacity: 0.7; */
+            }
+
+            50% {
+                transform: scale(1);
+                /* opacity: 0.9; */
+            }
+
+            100% {
+                transform: scale(0.99);
+                /* opacity: 0.7; */
+            }
+        }
+
+        .dot {
+            border-radius: 50%;
+            display: inline-block;
+            margin: 4px;
+            margin-bottom: 2%;
+            animation: pulse 2s infinite;
+        }
+
+
+        /* Navbar */
+        header {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            background: var(--white);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e0e0e0;
+            z-index: 1000;
+        }
+
+        header h1 {
+            margin: 0;
+            color: var(--dark-blue);
+            font-size: 1.4rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        nav a {
+            color: var(--dark-blue);
+            margin-left: 1.5rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--light-blue);
+        }
+
+        .cta-banner .cta {
+            background: var(--white);
+            color: var(--dark-red);
+            padding: 0.8rem 1.6rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+        }
+
+        .cta-banner .cta:hover {
+            background: #000;
+            color: var(--white);
+            /* background: var(--dark-red); */
+            transform: translateY(-2px);
+        }
+
+        #capabilities {
+            max-width: 1000px;
+            margin: auto;
+            text-align: center;
+        }
+
+        #capabilities h2 {
+            font-size: 2rem;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+        }
+
+        .grid {
+            display: grid;
+            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+
+        .cap {
+            border: 1px solid var(--light-blue);
+            padding: 20px;
+            border-radius: 4px;
+            background: var(--gray-light);
+            font-weight: 500;
+        }
+
+        /* Methodology */
+        #methodology {
+            background: var(--gray-light);
+        }
+
+        #methodology h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+        }
+
+        .steps {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            text-align: center;
+        }
+
+        .step {
+            flex: 1 1 250px;
+            max-width: 300px;
+            background: var(--white);
+            border: 1px solid var(--light-blue);
+            padding: 20px;
+            border-radius: 4px;
+        }
+
+        .step h3 {
+            margin-bottom: 10px;
+            color: var(--light-blue);
+        }
+
+        /* Solutions */
+        #solutions {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        #solutions h2 {
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        #whyus h2 {
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        .cards {
+            display: grid;
+            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        }
+
+        .card {
+            background: var(--gray-light);
+            border: 1px solid var(--light-blue);
+            padding: 20px;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: transform 0.6s ease, opacity 0.6s ease;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-left: 60px solid transparent;
+            border-bottom: 60px solid rgba(59, 90, 140, 0.1);
+        }
+
+        .card.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .card h3 {
+            /* margin: 0 0 10px; */
+            font-size: 1.2rem;
+        }
+
+        .price {
+            color: var(--light-blue);
+            font-weight: bold;
+        }
+
+        .soon {
+            background: var(--dark-red);
+            color: var(--white);
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 3px;
+            margin-left: 8px;
+        }
+
+        /* Trust */
+        #trust {
+            text-align: center;
+        }
+
+        #trust h2 {
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .badge {
+            border: 1px solid var(--light-blue);
+            padding: 20px 30px;
+            border-radius: 4px;
+            background: var(--white);
+            font-weight: 600;
+            color: var(--dark-blue);
+        }
+
+        /* Call to action banner */
+        .cta-banner {
+            background: var(--dark-red);
+            color: var(--white);
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .cta-banner h2 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+            text-transform: uppercase;
+        }
+
+        .cta-banner a {
+            background: var(--white);
+            color: var(--dark-red);
+            padding: 12px 24px;
+            border-radius: 3px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Contact */
+        #contact {
+            background: rgb(240, 240, 240);
+            color: var(--white);
+            text-align: center;
+        }
+
+        #contact h2 {
+            font-family: "Orbitron";
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 5px;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--light-blue);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--white);
+            border-radius: 3px;
+            font-size: 1rem;
+        }
+
+        button[type="submit"] {
+            margin-top: 20px;
+            /* background: var(--light-blue); */
+            /* color: var(--white); */
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: background 0.3s;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: var(--white);
+            color: black;
+            font-size: 0.9rem;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        footer p {
+            font-family: "Orbitron";
+        }
+
+        footer a {
+            font-family: "Exo 2";
+            color: black;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .visor-link {
+            font-family: "Orbitron";
+            position: relative;
+            padding: 10px 16px;
+            font-weight: 600;
+            color: white;
+            /* text at rest */
+            background: rgba(0, 0, 0, 0.5);
+            /* background at rest */
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        /* Visor corners at rest */
+        .visor-link::before,
+        .visor-link::after {
+            content: "";
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border: 2px solid white;
+            /* border at rest */
+            transition: all 0.3s ease;
+        }
+
+        .visor-link::before {
+            top: 0;
+            left: 0;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .visor-link::after {
+            bottom: 0;
+            right: 0;
+            border-left: none;
+            border-top: none;
+        }
+
+        /* Hover animation */
+        .visor-link:hover {
+            color: black;
+            /* text on hover */
+            background: white;
+            /* keep background white */
+        }
+
+        .visor-link:hover::before,
+        .visor-link:hover::after {
+            border-color: black;
+            /* borders animate to black */
+            width: 100%;
+            height: 100%;
+        }
+
+        .landing {
+            width: 100%;
+            height: 100vh;
+            background: black url('./assets/server-rack-720p-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        #wrapper-nav {
+            padding-top: 1.5em;
+            height: 10vh;
+        }
+
+        #nav-custom {
+            background-color: #000;
+            /* height: 10vh; */
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            /* margin-top: 1vh; */
+            margin-left: 2em;
+            margin-right: 2em;
+            /* padding: 1.5em; */
+            padding: 0.5em;
+            /* rounded edges */
+            border-radius: 8px;
+            /* transparent white overlay */
+            background: rgba(255, 255, 255, 0.07);
+            /* blur the background behind */
+            backdrop-filter: blur(1px);
+            /* Safari support */
+            -webkit-backdrop-filter: blur(1px);
+            /* subtle border */
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            /* soft black shadow */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); */
+        }
+
+        #nav-middle {
+            /* background-color: #fff; */
+            height: 80vh;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #nav-footer {
+            /* background-color: #000; */
+            height: 10vh;
+            text-align: center;
+        }
+
+        .foot-explore {
+            font-family: "Orbitron";
+            padding-bottom: 0.25em;
+            z-index: 1;
+
+        }
+
+        .scroll-indicator {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            /* transparent background */
+            color: white;
+            /* change to match your design */
+            font-family: sans-serif;
+            font-size: 16px;
+        }
+
+        .scroll-indicator .arrow {
+            font-size: 24px;
+            animation: bounce 1.5s infinite;
+        }
+
+        .arrow {
+            width: 28px;
+            height: 40px;
+            animation: bounce 1.6s ease-in-out infinite;
+        }
+
+        .arrow line,
+        .arrow polyline {
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+
+        /* bounce animation */
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(8px);
+            }
+
+            60% {
+                transform: translateY(4px);
+            }
+        }
+
+        .video-background {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .video-background video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: 0;
+            /* video is behind */
+            transform: translate(-50%, -50%);
+            /* object-fit: cover; */
+            object-fit: contain;
+        }
+
+        .video-background .content {
+            position: relative;
+            z-index: 1;
+            /* content above video */
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .span-brand {
+            font-family: "Orbitron";
+            margin: 0;
+            color: var(--white);
+            font-size: 1.4rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .midnav-text {
+            font-family: "Orbitron";
+            text-align: center;
+            color: var(--white);
+            position: relative;
+            font-size: 2.6rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+
+        form {
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+            box-sizing: border-box;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            color: #000;
+        }
+
+        label .required {
+            color: red;
+            margin-left: 0.4em;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            border: none;
+            border-bottom: 2px solid #000;
+            font-size: 16px;
+            padding: 8px 0;
+            background: transparent;
+            color: #000;
+            outline: none;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background: transparent;
+            padding-right: 20px;
+        }
+
+        button {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            text-transform: uppercase;
+            margin-top: 10px;
+            width: 100%;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #333;
+        }
+
+        .products {
+            background-color: rgb(240, 240, 240);
+            height: 100vh;
+        }
+
+        .scroll-text-animation-wrapper {
+            font-family: "Orbitron";
+            margin: 100px auto;
+            position: relative;
+            /* 3 x 5em (p) + 4em + 40px (h2) + 80px (section padding) + 5em margin */
+            height: calc(15em + 4em + 40px + 80px + 3vh);
+
+        }
+
+        .scroll-text-animation p {
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .scroll-text-animation p span {
+            display: inline-block;
+            opacity: 0.8;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+
+        .scroll-text-animation p.visible span {
+            opacity: 1;
+            transform: translateY(0);
+            line-height: 1.6;
+        }
+
+        /* Stagger delay */
+        .scroll-text-animation p:nth-child(1) span {
+            transition-delay: 0s;
+        }
+
+        .scroll-text-animation p:nth-child(2) span {
+            transition-delay: 0.1s;
+        }
+
+        .scroll-text-animation p:nth-child(3) span {
+            transition-delay: 0.2s;
+        }
+
+        .scroll-text-animation p:nth-child(4) span {
+            transition-delay: 0.3s;
+        }
+
+        .scroll-text-animation p:nth-child(5) span {
+            transition-delay: 0.4s;
+        }
+
+        /* BEGIN CAROUSEL */
+        /* Top buttons */
+        .carousel-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            max-width: 100%;
+            padding-bottom: 3em;
+        }
+
+        .carousel-buttons button {
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+            width: auto;
+        }
+
+        /* Carousel container */
+        .carousel {
+            position: relative;
+            width: 90%;
+            max-width: 95%;
+            max-height: calc(100% - 5em);
+            overflow: hidden;
+            border-radius: 8px;
+            margin: auto;
+
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            position: relative;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            display: block;
+        }
+
+        /* Overlay text */
+        .carousel-overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            padding: 15px;
+            border-radius: 6px;
+            color: white;
+        }
+
+        .overlay h2 {
+            margin: 0 0 5px 0;
+            font-size: 20px;
+        }
+
+        .overlay p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        /* Navigation arrows */
+        .carousel-arrow-container {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            /* padding: 10px; */
+            padding-top: 5px;
+            /* padding-bottom: 3px; */
+            border-radius: 3px;
+            /* border-radius: 50%; */
+            background: rgba(255, 255, 255, 0.3);
+            transition: background 0.3s;
+        }
+
+        .carousel-arrow-container:hover {
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .carousel-arrow-container.carousel-left {
+            left: 10px;
+        }
+
+        .carousel-arrow-container.carousel-right {
+            right: 10px;
+        }
+
+        svg.carousel-arrow {
+            width: 40px;
+            height: 24px;
+            stroke: white;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        /* Prevent image selection and dragging */
+        .carousel-slide img {
+            width: 100%;
+            display: block;
+            user-select: none;
+            /* Prevent text selection */
+            -webkit-user-drag: none;
+            /* Prevent image drag in WebKit browsers */
+            -moz-user-drag: none;
+            /* Firefox */
+            -ms-user-drag: none;
+            /* IE/Edge */
+            user-drag: none;
+            pointer-events: none;
+            /* Optional: prevent clicks */
+        }
+
+        /* END CAROUSEL */
+
+        /* BEGIN Visor Btn */
+        .visor-btn {
+            font-family: "Orbitron";
+            position: relative;
+            padding: 10px 16px;
+            font-weight: 600;
+            /* color: white; */
+            /* background-color: rgba(0, 0, 0, 0.5); */
+            color: black;
+            background-color: white;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        /* Visor corners at rest */
+        .visor-btn::before,
+        .visor-btn::after {
+            content: "";
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border: 2px solid black;
+            transition: all 0.3s ease;
+        }
+
+        .visor-btn::before {
+            top: 0;
+            left: 0;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .visor-btn::after {
+            bottom: 0;
+            right: 0;
+            border-left: none;
+            border-top: none;
+        }
+
+        .visor-btn.active {
+            color: white;
+            background: black;
+            border-color: white;
+        }
+
+        /* Hover animation */
+        .visor-btn:hover {
+            color: white;
+            background: black;
+        }
+
+        .visor-btn:hover::before,
+        .visor-btn:hover::after {
+            border-color: black;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* END Visor Btn */
+
+        .carousel-overlay h2 {
+            font-family: "Orbitron";
+            font-size: 1.3rem;
+            font-weight: normal;
+            text-transform: uppercase;
+        }
+
+        .carousel-overlay p {
+            font-family: "Exo 2";
+            font-size: 2rem;
+        }
+    </style>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="./assets/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="./assets/favicon_io/site.webmanifest">
+
+    <!-- fonts -->
+    <!-- orbitron -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+    <!-- exo 2 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Orbitron:wght@400..900&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="landing video-background" id="home">
+        <video id="bg-video" autoplay muted loop playsinline></video>
+
+        <div id="wrapper-nav">
+            <div id="nav-custom">
+                <div style="color: white; display: flex;">
+                    <img src="./assets/rempart-white.png" alt="Logo" style="height: 7vh; margin-right: 1.5em;">
+                    <span class="span-brand" style="margin:auto;">Rempart Systems</span>
+                </div>
+                <nav style="padding: 1em; margin-top:auto; margin-bottom: auto;">
+                    <a href="#home" class="visor-link">Home</a>
+                    <a href="#services" class="visor-link">Services</a>
+                    <a href="#contact" class="visor-link">Contact</a>
+                </nav>
+            </div>
+        </div>
+
+        <div id="nav-middle">
+            <h2 class="midnav-text">Mission-Driven<br>Cybersecurity Defenses</h2>
+        </div>
+
+        <div id="nav-footer" class="scroll-indicator">
+            <!-- <span class="arrow">↓</span> -->
+            <svg class="arrow" viewBox="0 0 24 40" aria-hidden="true">
+                <!-- vertical line -->
+                <line x1="12" y1="6" x2="12" y2="19" />
+                <!-- arrow tip as a ">" shape -->
+                <polyline points="5,14 12,22 19,14" />
+            </svg>
+            <span class="foot-explore">Scroll to Explore</span>
+        </div>
+    </div>
+
+
+
+
+    <section class="products" id="services">
+        <div class="carousel-buttons">
+            <button data-index="0" class="visor-btn active">SIEM</button>
+            <button data-index="1" class="visor-btn">NIDS</button>
+            <button data-index="2" class="visor-btn">VulnScan</button>
+            <button data-index="3" class="visor-btn">SCA</button>
+            <button data-index="4" class="visor-btn">IAM</button>
+            <button data-index="5" class="visor-btn">Consulting</button>
+        </div>
+
+
+        <div class="carousel">
+            <div class="carousel-track">
+                <div class="carousel-slide">
+                    <img src="./assets/carousel/01-SIEM.jpg" alt="SIEM background image">
+                    <div class="carousel-overlay">
+                        <h2>Security Information and Event Management (SIEM)</h2>
+                        <p>Centralized log collection and analysis to detect and respond to security events.</p>
+                    </div>
+                </div>
+                <div class="carousel-slide">
+                    <img src="./assets/carousel/02-NIDS.jpg" alt="NIDS background image">
+                    <div class="carousel-overlay">
+                        <h2>Network Intrusion Detection System (NIDS)</h2>
+                        <p>Network monitoring system that detects malicious or abnormal traffic.</p>
+                    </div>
+                </div>
+                <div class="carousel-slide">
+                    <img src="./assets/carousel/03-VulnScan.jpg" alt="VulnScan background image">
+                    <div class="carousel-overlay">
+                        <h2>Vulnerability Scanning (VulnScan)</h2>
+                        <p>Automated scan to identify security weaknesses.</p>
+                    </div>
+                </div>
+                <div class="carousel-slide">
+                    <img src="./assets/carousel/04-SCA.jpg" alt="SCA background image">
+                    <div class="carousel-overlay">
+                        <h2>Software Composition Analysis (SCA)</h2>
+                        <p>Automated code and dependency analysis to detect vulnerabilities in software components.</p>
+                    </div>
+                </div>
+                <div class="carousel-slide">
+                    <img src="./assets/carousel/05-IAM.jpg" alt="IAM background image">
+                    <div class="carousel-overlay">
+                        <h2>Identity Access Management (IAM)</h2>
+                        <p>Identity and access management to control who can access what systems and data.</p>
+                    </div>
+                </div>
+                <div class="carousel-slide">
+                    <img src="./assets/carousel/06-consulting.jpg" alt="Consulting background image">
+                    <div class="carousel-overlay">
+                        <h2>Consulting Services: Audit, Governance, SecDev, & other</h2>
+                        <p>Expert guidance to strengthen security programs, governance, and secure development
+                            practices.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Left Arrow -->
+            <div class="carousel-arrow-container carousel-left" style="padding-left: 12px;">
+                <svg class="carousel-arrow" viewBox="0 0 40 24" aria-hidden="true">
+                    <!-- horizontal line -->
+                    <line x1="6" y1="12" x2="19" y2="12" />
+                    <!-- arrow tip pointing left -->
+                    <polyline points="14,5 6,12 14,19" />
+                </svg>
+            </div>
+
+            <!-- Right Arrow -->
+            <div class="carousel-arrow-container carousel-right" style="padding-right: 14px;">
+                <svg class="carousel-arrow" viewBox="0 0 40 24" aria-hidden="true">
+                    <!-- horizontal line -->
+                    <line x1="21" y1="12" x2="34" y2="12" />
+                    <!-- arrow tip pointing right -->
+                    <polyline points="26,5 34,12 26,19" />
+                </svg>
+            </div>
+        </div>
+
+    </section>
+
+
+
+
+    <section id="whyus">
+
+        <svg class="radar" width="100%" height="100%" style="position:absolute;top:0;left:0; z-index:0;">
+            <circle cx="50%" cy="50%" r="100" stroke="rgba(0,0,0,0.15)" stroke-width="2" fill="none" />
+            <circle cx="50%" cy="50%" r="200" stroke="rgba(0,0,0,0.10)" stroke-width="2" fill="none" />
+            <circle cx="50%" cy="50%" r="300" stroke="rgba(0,0,0,0.08)" stroke-width="2" fill="none" />
+
+            <defs>
+                <linearGradient id="sweepGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="rgb(0,0,0)" stop-opacity="0.3" />
+                    <stop offset="100%" stop-color="rgb(0,0,0)" stop-opacity="0" />
+                </linearGradient>
+            </defs>
+
+            <line x1="50%" y1="50%" x2="50%" y2="0%" stroke="url(#sweepGradient)" stroke-width="3">
+                <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="10s"
+                    repeatCount="indefinite" />
+            </line>
+
+            <circle cx="50%" cy="20%" r="3" fill="rgb(0,0,0)" opacity="0.3">
+                <animate attributeName="r" values="3;6;3" dur="2.5s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.3;0.6;0.3" dur="2.5s" repeatCount="indefinite" />
+            </circle>
+
+            <circle cx="65%" cy="60%" r="3" fill="rgb(0,0,0)" opacity="0.3">
+                <animate attributeName="r" values="3;6;3" dur="3s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite" />
+            </circle>
+
+            <circle cx="40%" cy="60%" r="3" fill="rgb(0,0,0)" opacity="0.3">
+                <animate attributeName="r" values="3;6;3" dur="3.2s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3.2s" repeatCount="indefinite" />
+            </circle>
+
+            <circle cx="35%" cy="40%" r="3" fill="rgb(0,0,0)" opacity="0.3">
+                <animate attributeName="r" values="3;6;3" dur="3.5s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3.5s" repeatCount="indefinite" />
+            </circle>
+
+            <circle cx="55%" cy="85%" r="3" fill="rgb(0,0,0)" opacity="0.3">
+                <animate attributeName="r" values="3;6;3" dur="2.7s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.3;0.6;0.3" dur="2.7s" repeatCount="indefinite" />
+            </circle>
+        </svg>
+
+
+
+        <div class="scroll-text-animation-wrapper">
+            <div class="scroll-text-animation"
+                style="max-width: 70%; margin: auto; padding-bottom: 3em; text-align: center;">
+                <p style="margin: 1.5em 0; font-size: 2rem; font-weight: 500; color: rgb(40, 40, 40);"><span>
+                        Cybersecurity should be clear, effective, and mission-driven — not buried under buzzwords.
+                    </span></p>
+
+                <p style="margin: 1.5em 0; font-size: 2rem; color: rgb(40, 40, 40); font-weight: 500;"><span>
+                        We build defenses for fast-moving SMBs and global enterprises.
+                        Different scales, different needs — <span style="color: rgb(80, 80, 80)">we adapt the solution
+                            to
+                            the
+                            mission</span>, never
+                        the other way around.
+                    </span></p>
+
+                <p style="margin: 1.5em 0; font-size: 2rem; font-weight: 500; color: rgb(40, 40, 40);"><span>
+                        Our mission is simple: deliver defenses that work, and governance strategies that last.
+                        <br>We don't just talk security — we build it with you.
+                    </span></p>
+            </div>
+        </div>
+    </section>
+
+
+
+    <section id="contact">
+
+        <h2 style="color: black">Get Started</h2>
+        <form action="https://formspree.io/f/meolzkze" method="POST">
+            <div class="form-group">
+                <label for="firstName">First Name<span class="required">*</span></label>
+                <input type="text" id="firstName" name="firstName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="lastName">Last Name<span class="required">*</span></label>
+                <input type="text" id="lastName" name="lastName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Business Email Address<span class="required">*</span></label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone">
+            </div>
+
+            <div class="form-group">
+                <label for="jobTitle">Job Title<span class="required">*</span></label>
+                <input type="text" id="jobTitle" name="jobTitle">
+            </div>
+
+            <div class="form-group">
+                <label for="company">Company<span class="required">*</span></label>
+                <input type="text" id="company" name="company">
+            </div>
+
+            <div class="form-group">
+                <label for="country">Country</label>
+                <select id="country" name="country" required>
+                    <option value="" disabled selected>Select Country</option>
+                    <option value="United States">United States</option>
+                    <option value="Canada">Canada</option>
+                    <option value="United Kingdom">United Kingdom</option>
+                    <option value="Australia">Australia</option>
+                    <option value="Germany">Germany</option>
+                    <option value="France">France</option>
+                    <option value="Italy">Italy</option>
+                    <option value="Spain">Spain</option>
+                    <option value="Netherlands">Netherlands</option>
+                    <option value="Sweden">Sweden</option>
+                    <option value="Norway">Norway</option>
+                    <option value="Denmark">Denmark</option>
+                    <option value="Switzerland">Switzerland</option>
+                    <option value="India">India</option>
+                    <option value="China">China</option>
+                    <option value="Japan">Japan</option>
+                    <option value="Singapore">Singapore</option>
+                    <option value="Brazil">Brazil</option>
+                    <option value="Mexico">Mexico</option>
+                    <option value="South Africa">South Africa</option>
+                    <option value="United Arab Emirates">United Arab Emirates</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="companySize">Company Size<span class="required">*</span></label>
+                <select id="companySize" name="companySize">
+                    <option value="" disabled selected>Select</option>
+                    <option value="SMB">SMB (1-99 employees)</option>
+                    <option value="Medium">Medium (100-999 employees)</option>
+                    <option value="Enterprise">Enterprise (1000+ employees)</option>
+                </select>
+            </div>
+
+            <br>
+            <div class="form-group">
+                <label for="project">Tell us about your project</label>
+                <textarea id="project" name="project"></textarea>
+            </div>
+
+            <button class="visor-btn" type="submit">Submit</button>
+        </form>
+
+    </section>
+
+    <footer style="background:#fff; border-top:1px solid #eee; padding:30px 20px; text-align:center;">
+        <p style="font-size:0.9rem; margin-bottom:10px;">
+            © 2025 Rempart Systems. All Rights Reserved.
+        </p>
+        <a href="privacy.html">
+            Privacy Policy
+        </a>
+    </footer>
+
+    <script>
+        const cards = document.querySelectorAll('.card');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.2 });
+        cards.forEach(c => observer.observe(c));
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    e.preventDefault(); // cancel default jump
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+    <script>
+        const videos = [
+            "./assets/server-rack-720p.mov",
+        ];
+
+        let bgVideoCurrentIndex = 0;
+        const videoElement = document.getElementById("bg-video");
+
+        // Load  first video
+        videoElement.src = videos[bgVideoCurrentIndex];
+        videoElement.load();
+        videoElement.play();
+
+        // When one video ends, load the next one
+        videoElement.addEventListener("ended", () => {
+            bgVideoCurrentIndex = (bgVideoCurrentIndex + 1) % videos.length;
+            videoElement.src = videos[bgVideoCurrentIndex];
+            videoElement.load();
+            videoElement.play();
+        });
+    </script>
+
+    <script>
+        const paragraphs = document.querySelectorAll('.scroll-text-animation p');
+
+        function checkVisibility() {
+            const triggerPoint = window.innerHeight * 0.9;
+
+            paragraphs.forEach(p => {
+                const rect = p.getBoundingClientRect();
+                if (rect.top < triggerPoint && rect.bottom > 0) {
+                    p.classList.add('visible');
+                } else {
+                    p.classList.remove('visible');
+                }
+            });
+        }
+        d
+        window.addEventListener('scroll', checkVisibility);
+        window.addEventListener('load', checkVisibility);
+    </script>
+
+
+    <script>
+        // carousel script
+        const track = document.querySelector('.carousel-track');
+        const slides = Array.from(track.children);
+        const totalSlides = slides.length;
+        const leftArrow = document.querySelector('.carousel-arrow-container.carousel-left');
+        const rightArrow = document.querySelector('.carousel-arrow-container.carousel-right');
+        const buttons = document.querySelectorAll('.carousel-buttons button');
+
+        let currentIndex = 0;
+        let recentClick = false;
+
+        function updateCarousel(index) {
+            track.style.transform = 'translateX(-' + index * 100 + '%)';
+            buttons.forEach(btn => btn.classList.remove('active'));
+            buttons[index].classList.add('active');
+            currentIndex = index;
+        }
+
+        rightArrow.addEventListener('click', () => {
+            let index = currentIndex + 1;
+            if (index >= slides.length) index = 0;
+            updateCarousel(index);
+            recentClick = true;
+        });
+
+        leftArrow.addEventListener('click', () => {
+            let index = currentIndex - 1;
+            if (index < 0) index = slides.length - 1;
+            updateCarousel(index);
+            recentClick = true;
+        });
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                updateCarousel(parseInt(btn.dataset.index));
+                recentClick = true;
+            });
+        });
+
+        function nextSlide() {
+            if (recentClick) {
+                recentClick = false;
+            } else {
+                updateCarousel((currentIndex + 1) % totalSlides);
+            }
+        }
+
+        setInterval(nextSlide, 5000);
+    </script>
+</body>
+
+</html>
